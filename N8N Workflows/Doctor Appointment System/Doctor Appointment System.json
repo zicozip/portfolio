@@ -1,0 +1,585 @@
+{
+  "name": "Doctor Appointment System",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "appointment-request",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -592,
+        -128
+      ],
+      "id": "9a75d980-9cea-4e7d-9f99-669a5edb3671",
+      "name": "Appointment Request Webhook",
+      "webhookId": "ae37658d-fe68-4227-ab11-984d6b9add8f"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.webhook_type }}",
+                    "rightValue": "schedule",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "af9d6f13-1e93-4f2d-88f0-16f4d546013c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "schedule"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ed855d1f-581e-4a24-857f-10901f5194b3",
+                    "leftValue": "={{ $json.body.webhook_type }}",
+                    "rightValue": "reschedule",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "reschedule"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "99ad4b8f-7ca9-4965-ba9c-6d772684d724",
+                    "leftValue": "={{ $json.body.webhook_type }}",
+                    "rightValue": "cancel",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "cancel"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e9148822-3e0c-4ef9-b06c-01a696285168",
+                    "leftValue": "={{ $json.body.webhook_type }}",
+                    "rightValue": "confirm",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "confirm"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "none"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -368,
+        -160
+      ],
+      "id": "6e946df6-01ce-4913-9bdb-39b41fbe4776",
+      "name": "Request Type Classifier"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "m5tfkfL8L4ifXLI7",
+          "mode": "list"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "body_patient_id": "={{ $json.body.patient_id }}",
+            "body_patient_name": "={{ $json.body.patient_name }}",
+            "body_patient_email": "={{ $json.body.patient_email }}",
+            "body_patient_phone": "={{ $json.body.patient_phone }}",
+            "body_doctor_requested": "={{ $json.body.doctor_requested }}",
+            "body_appointment_type": "={{ $json.body.appointment_type }}",
+            "body_requested_date": "={{ $json.body.requested_date }}",
+            "body_requested_time": "={{ $json.body.requested_time }}",
+            "body_priority": "={{ $json.body.priority }}",
+            "body_notes": "={{ $json.body.notes }}"
+          },
+          "matchingColumns": [
+            "body_patient_id",
+            "body_patient_name",
+            "body_patient_email",
+            "body_patient_phone",
+            "body_doctor_requested",
+            "body_appointment_type",
+            "body_requested_date",
+            "body_requested_time",
+            "body_priority",
+            "body_notes"
+          ],
+          "schema": [
+            {
+              "id": "body_patient_id",
+              "displayName": "body_patient_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "body_patient_name",
+              "displayName": "body_patient_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "body_patient_email",
+              "displayName": "body_patient_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "body_patient_phone",
+              "displayName": "body_patient_phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "body_doctor_requested",
+              "displayName": "body_doctor_requested",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "body_appointment_type",
+              "displayName": "body_appointment_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "body_requested_date",
+              "displayName": "body_requested_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "body_requested_time",
+              "displayName": "body_requested_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "body_priority",
+              "displayName": "body_priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "body_notes",
+              "displayName": "body_notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -144,
+        -464
+      ],
+      "name": "Call Schedule Processor",
+      "id": "9e046efc-2df8-48f5-aace-c6197804cb53"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "RbepbGYDWvb93vut",
+          "mode": "list"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "existing_appointment_id": "={{ $json.existing_appointment_id }}",
+            "body_patient_id": "={{ $('Appointment Request Webhook').item.json.body.patient_id }}",
+            "body_patient_name": "={{ $('Appointment Request Webhook').item.json.body.patient_name }}",
+            "body_requested_date": "={{ $('Appointment Request Webhook').item.json.body.requested_date }}",
+            "reason": "={{ $json.reason }}"
+          },
+          "matchingColumns": [
+            "existing_appointment_id",
+            "body_patient_id",
+            "body_patient_name",
+            "body_requested_date",
+            "reason"
+          ],
+          "schema": [
+            {
+              "id": "existing_appointment_id",
+              "displayName": "existing_appointment_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "body_patient_id",
+              "displayName": "body_patient_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "body_patient_name",
+              "displayName": "body_patient_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "body_requested_date",
+              "displayName": "body_requested_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "reason",
+              "displayName": "reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -144,
+        -256
+      ],
+      "name": "Call Reschedule Processor",
+      "id": "7f67a9ce-e595-48d2-812f-000e806d025a"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "vGBO1fiXHaGKt4Mz",
+          "mode": "list"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "appointment_id": "={{ $json.appointment_id }}",
+            "patient_id": "={{ $json.patient_id }}",
+            "patient_name": "={{ $json.patient_name }}",
+            "reason": "={{ $json.reason }}",
+            "requested_by": "={{ $json.requested_by }}"
+          },
+          "matchingColumns": [
+            "appointment_id",
+            "patient_id",
+            "patient_name",
+            "reason",
+            "requested_by"
+          ],
+          "schema": [
+            {
+              "id": "appointment_id",
+              "displayName": "appointment_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "patient_id",
+              "displayName": "patient_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "patient_name",
+              "displayName": "patient_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "reason",
+              "displayName": "reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "requested_by",
+              "displayName": "requested_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -144,
+        -48
+      ],
+      "name": "Call Cancel Processor",
+      "id": "a933d9fd-0205-4ac8-b52a-84cd72a336b8"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "IXshCXOcQRUx3rQW",
+          "mode": "list"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "appointment_id": "={{ $json.appointment_id }}",
+            "patient_id": "={{ $json.patient_id }}",
+            "patient_name": "={{ $json.patient_name }}",
+            "requested_by": "={{ $json.requested_by }}"
+          },
+          "matchingColumns": [
+            "appointment_id",
+            "patient_id",
+            "patient_name",
+            "requested_by"
+          ],
+          "schema": [
+            {
+              "id": "appointment_id",
+              "displayName": "appointment_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "patient_id",
+              "displayName": "patient_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "patient_name",
+              "displayName": "patient_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "requested_by",
+              "displayName": "requested_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -144,
+        160
+      ],
+      "name": "Call Confirm Processor",
+      "id": "ff49f3e8-04de-4414-9b4b-c921dca745e4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Appointment Request Webhook": {
+      "main": [
+        [
+          {
+            "node": "Request Type Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Request Type Classifier": {
+      "main": [
+        [
+          {
+            "node": "Call Schedule Processor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call Reschedule Processor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call Cancel Processor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call Confirm Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f7d7f2ab-bf77-4ef5-b767-82202e4bed93",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ff133700c8dcc4b4e27feb6898546611b3d066d4ac91b4bbfdc330eeaa7cf10e"
+  },
+  "id": "bNbyCJo85BR9L9ue",
+  "tags": []
+}

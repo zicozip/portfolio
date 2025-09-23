@@ -252,25 +252,137 @@
       ],
       "integrations": ["OpenAI GPT-4", "Gmail API", "Data Validation", "Performance Analytics"],
       "sourceFile": "AI Email Personalization System.json"
+    },
+    {
+      "id": 7,
+      "title": "Email-SMS AI Trello Automation",
+      "description": "Intelligent communication management system that processes SMS messages and emails through AI analysis, automatically creates and manages Trello cards based on content priority, client identification, and urgency detection.",
+      "images": [
+        {
+          "url": "/images/projects/email-sms-trello-workflow.jpg",
+          "altText": "Email-SMS AI Trello Automation workflow overview",
+          "caption": "Complete n8n workflow for intelligent SMS and email processing with Trello integration",
+          "isMain": true
+        }
+      ],
+      "category": "ai_automation",
+      "technologies": ["VoIP SMS", "AI Content Analysis", "Trello API", "Client Detection", "Priority Classification", "Webhook Processing"],
+      "highlights": [
+        "Intelligent SMS content validation and processing",
+        "AI-powered client identification from phone numbers",
+        "Automatic priority detection using keyword analysis",
+        "Smart Trello card creation with context-aware routing",
+        "Real-time communication processing and error handling",
+        "Dynamic board and list assignment based on client profiles"
+      ],
+      "metrics": {
+        "automationSavings": "35 hours/week",
+        "accuracyImprovement": "94%",
+        "integrations": 6,
+        "workflowComplexity": "Advanced"
+      },
+      "workflowSteps": [
+        "Receive SMS messages via VoIP webhook integration",
+        "Validate SMS content and sender information",
+        "Perform client lookup with phone number normalization",
+        "Apply AI-powered priority classification using content analysis",
+        "Route messages to appropriate Trello boards and lists",
+        "Create structured Trello cards with client context",
+        "Handle errors with comprehensive logging and fallback processing",
+        "Send confirmation notifications and track processing metrics"
+      ],
+      "integrations": ["VoIP SMS Provider", "Trello API", "Client Database", "AI Content Analysis", "Error Logging", "Notification Systems"],
+      "sourceFile": "Email_SMS AI Trello Automation.json"
+    },
+    {
+      "id": 8,
+      "title": "Doctor Appointment System",
+      "description": "Comprehensive healthcare appointment management platform with intelligent sub-workflow orchestration for scheduling, rescheduling, confirmation, and cancellation processes, featuring advanced error handling, alternative slot suggestions, and multi-channel communication.",
+      "images": [
+        {
+          "url": "/images/projects/doctor-appointment-1-main.jpg",
+          "altText": "Main Doctor Appointment System workflow with sub-workflows",
+          "caption": "Complete healthcare appointment management system with intelligent sub-workflow routing",
+          "isMain": true
+        },
+        {
+          "url": "/images/projects/doctor-appointment-2-schedule.jpg",
+          "altText": "Schedule Processor sub-workflow",
+          "caption": "Advanced appointment scheduling logic with availability checking and alternative suggestions"
+        },
+        {
+          "url": "/images/projects/doctor-appointment-3-reschedule.jpg",
+          "altText": "Reschedule Processor sub-workflow",
+          "caption": "Intelligent rescheduling system with conflict resolution and patient communication"
+        },
+        {
+          "url": "/images/projects/doctor-appointment-4-confirm.jpg",
+          "altText": "Confirm Processor sub-workflow",
+          "caption": "Appointment confirmation workflow with validation and notification systems"
+        },
+        {
+          "url": "/images/projects/doctor-appointment-5-cancel.jpg",
+          "altText": "Cancel Processor sub-workflow",
+          "caption": "Comprehensive cancellation processing with reason tracking and slot management"
+        }
+      ],
+      "category": "healthcare_automation",
+      "technologies": ["Healthcare APIs", "Sub-workflow Architecture", "Twilio SMS", "Slack Integration", "Appointment Scheduling", "Database Management", "Error Handling"],
+      "highlights": [
+        "Modular sub-workflow architecture for scalable appointment management",
+        "Intelligent appointment type classification (schedule, reschedule, cancel, confirm)",
+        "Advanced availability checking with alternative slot suggestions",
+        "Multi-channel patient communication via SMS and Slack notifications",
+        "Comprehensive error handling with user-friendly messaging",
+        "Healthcare-compliant data validation and processing",
+        "Real-time appointment status tracking and analytics"
+      ],
+      "metrics": {
+        "automationSavings": "60 hours/week",
+        "accuracyImprovement": "98%",
+        "integrations": 8,
+        "workflowComplexity": "Expert"
+      },
+      "workflowSteps": [
+        "Receive appointment requests through secure webhook endpoint",
+        "Classify request type using intelligent routing logic",
+        "Execute specialized sub-workflows for each appointment action",
+        "Validate patient data and appointment requirements",
+        "Check doctor availability and suggest alternatives if needed",
+        "Process appointment changes with conflict resolution",
+        "Send multi-channel notifications via SMS and Slack",
+        "Update appointment database with comprehensive tracking",
+        "Generate error responses with actionable patient guidance",
+        "Compile analytics and performance metrics"
+      ],
+      "integrations": ["Healthcare Database", "Twilio SMS", "Slack API", "Sub-workflow Engine", "Appointment Scheduler", "Patient Communication", "Error Logging", "Analytics Dashboard"],
+      "sourceFile": "Doctor Appointment System.json"
     }
   ],
   "categories": [
-    { "id": "all", "name": "All Projects", "count": 6 },
-    { "id": "ai_automation", "name": "AI Automation", "count": 3 },
+    { "id": "all", "name": "All Projects", "count": 8 },
+    { "id": "ai_automation", "name": "AI Automation", "count": 4 },
     { "id": "data_sync", "name": "Data Synchronization", "count": 1 },
     { "id": "data_transformation", "name": "Data Transformation", "count": 1 },
-    { "id": "api_integration", "name": "API Integration", "count": 1 }
+    { "id": "api_integration", "name": "API Integration", "count": 1 },
+    { "id": "healthcare_automation", "name": "Healthcare Automation", "count": 1 }
   ],
   "integrations": [
     { "name": "Gmail", "category": "Communication", "projects": [1, 3, 6] },
     { "name": "Asana", "category": "Project Management", "projects": [1, 2] },
     { "name": "Google Drive", "category": "File Storage", "projects": [1, 3, 4] },
     { "name": "Xero", "category": "Accounting", "projects": [2] },
-    { "name": "AI APIs", "category": "Artificial Intelligence", "projects": [3, 4, 5, 6] },
-    { "name": "Database Systems", "category": "Data Storage", "projects": [3, 4] },
+    { "name": "AI APIs", "category": "Artificial Intelligence", "projects": [3, 4, 5, 6, 7] },
+    { "name": "Database Systems", "category": "Data Storage", "projects": [3, 4, 8] },
     { "name": "CRM Systems", "category": "Customer Management", "projects": [4, 5] },
     { "name": "Email Notifications", "category": "Communication", "projects": [2] },
     { "name": "OpenAI", "category": "Artificial Intelligence", "projects": [6] },
-    { "name": "Email Marketing", "category": "Marketing Automation", "projects": [6] }
+    { "name": "Email Marketing", "category": "Marketing Automation", "projects": [6] },
+    { "name": "SMS/VoIP", "category": "Communication", "projects": [7, 8] },
+    { "name": "Trello", "category": "Project Management", "projects": [7] },
+    { "name": "Slack", "category": "Communication", "projects": [8] },
+    { "name": "Twilio", "category": "Communication", "projects": [8] },
+    { "name": "Healthcare APIs", "category": "Healthcare", "projects": [8] },
+    { "name": "Sub-workflows", "category": "Architecture", "projects": [8] }
   ]
 }

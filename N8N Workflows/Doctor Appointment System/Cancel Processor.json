@@ -1,0 +1,403 @@
+{
+  "name": "Cancel Processor",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "110490d3-bebe-4404-b0d4-0befc7d23893",
+              "name": "error_id",
+              "value": "={{ $runIndex }}-{{ Date.now() }}",
+              "type": "string"
+            },
+            {
+              "id": "fa9e3050-12c5-4675-8476-d32934bfdd3e",
+              "name": "error_type",
+              "value": "={{ $json.patient_id ? ($json.appointment_id ? 'validation_error' : 'missing_appointment_id') : 'missing_patient_data' }}",
+              "type": "string"
+            },
+            {
+              "id": "b9ec45d5-7d6c-4445-96c9-cf51e7086d73",
+              "name": "error_message",
+              "value": "={{ $json.patient_id ? ($json.appointment_id ? 'Required fields missing for appointment processing' : 'Appointment ID not provided') : 'Patient information incomplete' }}",
+              "type": "string"
+            },
+            {
+              "id": "74b9005b-fc88-4898-866c-860f1d912cb1",
+              "name": "failed_data",
+              "value": "={{ JSON.stringify($json) }}",
+              "type": "string"
+            },
+            {
+              "id": "1758c940-89a5-4e64-ad68-a718190a4122",
+              "name": "resolution_suggestion",
+              "value": "={{ $json.patient_id ? ($json.appointment_id ? 'Please provide all required fields: patient_id, doctor_name, date, time' : 'Please provide appointment ID for modification requests') : 'Please provide complete patient information including ID, name, and contact details' }}",
+              "type": "string"
+            },
+            {
+              "id": "b789dbd0-4ff2-427d-b91f-d54a60fa44ee",
+              "name": "timestamp",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        400
+      ],
+      "id": "d12b5595-5e01-4f84-83b2-f1ed9a06637a",
+      "name": "Error Handler"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get error details from input\nconst errorData = $input.item.json;\nconst errorType = errorData.error_type;\nconst originalData = JSON.parse(errorData.failed_data || '{}');\n\n// Define error response templates\nconst errorTemplates = {\n  missing_patient_data: {\n    code: 'PATIENT_DATA_MISSING',\n    title: 'Patient Information Required',\n    message: 'We need your complete information to process your ' +\n      'appointment request.',\n    user_message: 'Please provide your patient ID, full name, phone ' +\n      'number, and email address.',\n    severity: 'high'\n  },\n  missing_appointment_id: {\n    code: 'APPOINTMENT_ID_MISSING', \n    title: 'Appointment Reference Missing',\n    message: 'Appointment ID is required for modification or ' +\n      'cancellation requests.',\n    user_message: 'Please provide your appointment confirmation number.',\n    severity: 'medium'\n  },\n  validation_error: {\n    code: 'VALIDATION_FAILED',\n    title: 'Incomplete Request',\n    message: 'Some required information is missing from your ' +\n      'appointment request.',\n    user_message: 'Please check that you\\'ve provided doctor name, ' +\n      'preferred date, and time.',\n    severity: 'medium'\n  },\n  availability_error: {\n    code: 'SLOT_UNAVAILABLE',\n    title: 'Time Slot Not Available', \n    message: 'The requested appointment time is not available.',\n    user_message: 'Please choose from the alternative times we\\'ve ' +\n      'suggested or call our office.',\n    severity: 'low'\n  },\n  system_error: {\n    code: 'SYSTEM_ERROR',\n    title: 'System Temporarily Unavailable',\n    message: 'Our appointment system is temporarily unavailable.',\n    user_message: 'Please try again in a few minutes or call our ' +\n      'office directly.',\n    severity: 'high'\n  }\n};\n\n// Get error template or use default\nconst template = errorTemplates[errorType] || errorTemplates.system_error;\n\n// Generate response\nconst response = {\n  error_code: template.code,\n  error_title: template.title,\n  error_message: template.message,\n  user_friendly_message: template.user_message,\n  severity: template.severity,\n  patient_name: originalData.patient_name || 'Valued Patient',\n  patient_contact: originalData.patient_phone || \n    originalData.patient_email || '',\n  timestamp: new Date().toISOString(),\n  support_phone: '555-DOCTOR',\n  support_email: 'appointments@healthcare.com',\n  resolution_steps: [\n    'Review the information you provided',\n    'Ensure all required fields are complete',\n    'Try submitting your request again',\n    'Contact our office if the problem continues'\n  ],\n  original_request_id: errorData.error_id,\n  retry_possible: template.severity !== 'high'\n};\n\nreturn {\n  json: {\n    ...errorData,\n    ...response\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        400
+      ],
+      "id": "3d5f9db4-e1e0-4ced-b2e3-5fb6d0452309",
+      "name": "Error Response Generator"
+    },
+    {
+      "parameters": {
+        "from": "+0987654321",
+        "to": "+1234567890",
+        "message": "=Hello {{ $json.patient_name }}, {{ $json.user_friendly_message }} {{ $json.support_phone ? 'Please call ' + $json.support_phone + ' for assistance.' : '' }} Reference: {{ $json.original_request_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        768,
+        400
+      ],
+      "id": "a861da71-e31e-461e-897b-8f66f7c2d2e6",
+      "name": "Error Communicator",
+      "credentials": {
+        "twilioApi": {
+          "id": "7KaOUFh7IIu5Abnw",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1316e242-b6fa-42b6-bdeb-4bce1d7acb88",
+              "name": "appointment_id",
+              "value": "={{ $json.appointment_id }}",
+              "type": "string"
+            },
+            {
+              "id": "24e576a3-3db9-49a0-a7b8-53b1d38228e6",
+              "name": "patient_id",
+              "value": "={{ $json.patient_id }}",
+              "type": "string"
+            },
+            {
+              "id": "926f1f31-8148-40b9-838f-08f6c63918aa",
+              "name": "patient_name",
+              "value": "={{ $json.patient_name }}",
+              "type": "string"
+            },
+            {
+              "id": "14404110-687c-4663-8251-9697c1d076d3",
+              "name": "cancellation_reason",
+              "value": "={{ $json.reason || 'No reason provided' }}",
+              "type": "string"
+            },
+            {
+              "id": "20d5dfee-58f7-48a0-9139-e1cb388b2df1",
+              "name": "cancelled_by",
+              "value": "={{ $json.requested_by || 'patient' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -128,
+        208
+      ],
+      "id": "dc1be92e-c3d7-4b6f-ae70-d33375c95e39",
+      "name": "Cancel Processor"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8aef7175-ebc9-4314-8481-cc68ddfaa54c",
+              "leftValue": "={{ $json.appointment_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "471c60c5-9b1d-435f-b606-dcda5e34a108",
+              "leftValue": "={{ $json.patient_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        96,
+        208
+      ],
+      "id": "dfa67379-9e87-4a8c-b289-a3353a27ead2",
+      "name": "Cancel Validator"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "#general",
+          "mode": "name"
+        },
+        "text": "={\\n  \\\"channel\\\": \\\"#appointments\\\",\\n  \\\"username\\\": \\\"Appointment Bot\\\",\\n  \\\"icon_emoji\\\": \\\":calendar:\\\",\\n  \\\"text\\\": \\\"Appointment Update\\\",\\n  \\\"attachments\\\": [\\n    {\\n      \\\"color\\\": \\\"{{ $json.status === 'confirmed' ? 'good' : $json.status === 'cancelled' ? 'danger' : 'warning' }}\\\",\\n      \\\"title\\\": \\\"{{ $json.webhook_type === 'schedule' ? 'New Appointment' : $json.webhook_type === 'reschedule' ? 'Rescheduled Appointment' : $json.webhook_type === 'cancel' ? 'Cancelled Appointment' : 'Confirmed Appointment' }}\\\",\\n      \\\"fields\\\": [\\n        {\\n          \\\"title\\\": \\\"Patient\\\",\\n          \\\"value\\\": \\\"{{ $json.patient_name }}\\\",\\n          \\\"short\\\": true\\n        },\\n        {\\n          \\\"title\\\": \\\"Doctor\\\",\\n          \\\"value\\\": \\\"{{ $json.doctor_name }}\\\",\\n          \\\"short\\\": true\\n        },\\n        {\\n          \\\"title\\\": \\\"Date & Time\\\", \\n          \\\"value\\\": \\\"{{ $json.appointment_date }} at {{ $json.appointment_time }}\\\",\\n          \\\"short\\\": true\\n        },\\n        {\\n          \\\"title\\\": \\\"Type\\\",\\n          \\\"value\\\": \\\"{{ $json.appointment_type }}\\\",\\n          \\\"short\\\": true\\n        }\\n      ],\\n      \\\"footer\\\": \\\"Healthcare System\\\",\\n      \\\"ts\\\": {{ Math.floor(Date.now() / 1000) }}\\n    }\\n  ]\\n}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        544,
+        208
+      ],
+      "id": "d86cc44a-a633-4d7d-a866-5401e3317bf2",
+      "name": "Staff Notifier",
+      "webhookId": "3db0d2d4-041a-4a33-84db-7d46a40150b7",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "xcg951jkmPlzFM5W",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://d3a7a6dafaa0.ngrok-free.app/mockdata/{{ $json.appointment_id ? '/' + $json.appointment_id : '' }}",
+        "authentication": "predefinedCredentialType",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\\n  \\\"patient_id\\\": \\\"{{ $json.patient_id }}\\\",\\n  \\\"doctor_name\\\": \\\"{{ $json.doctor_name }}\\\",\\n  \\\"appointment_date\\\": \\\"{{ $json.appointment_date || $json.new_requested_date }}\\\",\\n  \\\"appointment_time\\\": \\\"{{ $json.appointment_time || $json.new_requested_time }}\\\",\\n  \\\"appointment_type\\\": \\\"{{ $json.appointment_type || 'General' }}\\\",\\n  \\\"status\\\": \\\"{{ $json.confirmation_status || 'scheduled' }}\\\",\\n  \\\"notes\\\": \\\"{{ $json.notes || $json.reason || '' }}\\\",\\n  \\\"priority\\\": \\\"{{ $json.priority || 'normal' }}\\\",\\n  \\\"action\\\": \\\"{{ $json.webhook_type || 'schedule' }}\\\"\\n}",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "maxRedirects": 3
+            }
+          },
+          "response": {
+            "response": {}
+          },
+          "timeout": 15000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        112
+      ],
+      "id": "536ccb6d-b992-405c-8db1-d14b1912417b",
+      "name": "Healthcare System Updater"
+    },
+    {
+      "parameters": {
+        "from": "+1234567890",
+        "to": "+0987654321",
+        "message": "Your appointment has been confirmed.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        544,
+        16
+      ],
+      "id": "a02353f7-5099-41e0-be29-4f90912c27ab",
+      "name": "Patient Communicator",
+      "credentials": {
+        "twilioApi": {
+          "id": "7KaOUFh7IIu5Abnw",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "appointment_id",
+              "type": "any"
+            },
+            {
+              "name": "patient_id",
+              "type": "any"
+            },
+            {
+              "name": "patient_name",
+              "type": "any"
+            },
+            {
+              "name": "reason",
+              "type": "any"
+            },
+            {
+              "name": "requested_by",
+              "type": "any"
+            }
+          ]
+        }
+      },
+      "id": "63e65dde-3cac-4a71-a95f-90c01b592af7",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -352,
+        208
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Cancel Processor": {
+      "main": [
+        [
+          {
+            "node": "Cancel Validator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cancel Validator": {
+      "main": [
+        [
+          {
+            "node": "Healthcare System Updater",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Handler": {
+      "main": [
+        [
+          {
+            "node": "Error Response Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Response Generator": {
+      "main": [
+        [
+          {
+            "node": "Error Communicator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Healthcare System Updater": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Patient Communicator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Cancel Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "50bbaea1-7fe3-46ca-aba5-86f11097d9b6",
+  "meta": {
+    "instanceId": "ff133700c8dcc4b4e27feb6898546611b3d066d4ac91b4bbfdc330eeaa7cf10e"
+  },
+  "id": "vGBO1fiXHaGKt4Mz",
+  "tags": []
+}
