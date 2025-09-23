@@ -1,0 +1,20 @@
+{
+  "available": true,
+  "doctor_name": "Dr. Sarah Johnson",
+  "requested_date": "2025-09-23",
+  "requested_time": "11:30",
+  "conflicts": [],
+  "doctor_schedule": {
+    "working_hours": {
+      "monday": ["09:00-17:00"],
+      "tuesday": ["09:00-17:00"],
+      "wednesday": ["09:00-17:00"],
+      "thursday": ["09:00-17:00"],
+      "friday": ["09:00-17:00"]
+    },
+    "booked_slots": [
+      {"date": "2025-09-22", "time": "10:00", "duration": 30},
+      {"date": "2025-09-23", "time": "11:30", "duration": 30}
+    ]
+  }
+}

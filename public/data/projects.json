@@ -1,0 +1,276 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "title": "Intelligent Lead Management System",
+      "description": "Automated lead capture from Gmail, enrichment through multiple APIs, and intelligent routing to Asana with Google Drive document management.",
+      "images": [
+        {
+          "url": "/images/projects/lead-management-3-workflow-ready.jpg",
+          "altText": "n8n workflow for Ready to Start status",
+          "caption": "Complete n8n workflow automation for processing Ready to Start leads",
+          "isMain": true
+        },
+        {
+          "url": "/images/projects/lead-management-5-no-response.jpg",
+          "altText": "No Response workflow branch",
+          "caption": "Automated workflow branch for handling leads with no response"
+        },
+        {
+          "url": "/images/projects/lead-management-6-quoted.jpg",
+          "altText": "Quoted status workflow automation",
+          "caption": "Workflow automation for leads that have been quoted"
+        },
+        {
+          "url": "/images/projects/lead-management-7-approved.jpg",
+          "altText": "Approved status workflow processing",
+          "caption": "Automated processing workflow for approved project leads"
+        },
+        {
+          "url": "/images/projects/lead-management-8-paid-closed.jpg",
+          "altText": "Final workflow - Paid and Closed status",
+          "caption": "Complete workflow cycle ending with paid and closed lead status"
+        }
+      ],
+      "category": "ai_automation",
+      "technologies": ["Gmail", "Asana", "Google Drive", "Enrichment APIs", "n8n Workflows"],
+      "highlights": [
+        "95% reduction in manual lead processing time",
+        "Automatic lead scoring and qualification",
+        "Seamless CRM integration with document management",
+        "Real-time notifications and task assignment"
+      ],
+      "metrics": {
+        "automationSavings": "40 hours/week",
+        "accuracyImprovement": "95%",
+        "integrations": 6,
+        "workflowComplexity": "Advanced"
+      },
+      "workflowSteps": [
+        "Monitor Gmail for new lead emails",
+        "Extract contact information using AI parsing",
+        "Enrich leads with external API data",
+        "Score leads based on predefined criteria",
+        "Create Asana tasks with enriched data",
+        "Store relevant documents in Google Drive",
+        "Send notifications to sales team"
+      ],
+      "integrations": ["Gmail", "Asana", "Google Drive", "Lead Enrichment APIs", "Slack", "Webhooks"],
+      "sourceFile": "Asana-Gmail-Gdrive.json"
+    },
+    {
+      "id": 2,
+      "title": "Automated Financial Reporting",
+      "description": "Comprehensive financial reporting automation connecting Asana project data with Xero accounting system for real-time business insights.",
+      "images": [
+        {
+          "url": "/images/projects/financial-reporting-1-workflow.jpg",
+          "altText": "Complete Asana-Xero financial reporting workflow",
+          "caption": "End-to-end n8n workflow connecting Asana project data with Xero accounting",
+          "isMain": true
+        }
+      ],
+      "category": "data_sync",
+      "technologies": ["Asana", "Xero", "Financial APIs", "Report Generation", "Data Analytics"],
+      "highlights": [
+        "Automated monthly financial report generation",
+        "Real-time project cost tracking",
+        "Integration between project management and accounting",
+        "Custom dashboard with financial KPIs"
+      ],
+      "metrics": {
+        "automationSavings": "25 hours/month",
+        "accuracyImprovement": "98%",
+        "integrations": 4,
+        "workflowComplexity": "Intermediate"
+      },
+      "workflowSteps": [
+        "Extract project data from Asana",
+        "Process time tracking and resource allocation",
+        "Connect with Xero for financial data",
+        "Generate comprehensive reports",
+        "Distribute reports to stakeholders",
+        "Update financial dashboards"
+      ],
+      "integrations": ["Asana", "Xero", "Google Sheets", "Email Notifications"],
+      "sourceFile": "Asana-Xero-Report.json"
+    },
+    {
+      "id": 3,
+      "title": "AI-Powered Email Attachment Processing",
+      "description": "Intelligent email monitoring system that automatically processes attachments using AI, extracts key information, and distributes data to relevant systems.",
+      "images": [
+        {
+          "url": "/images/projects/email-attachment-1-workflow.jpg",
+          "altText": "Gmail attachment processing workflow overview",
+          "caption": "Complete n8n workflow for automated Gmail attachment processing and storage",
+          "isMain": true
+        }
+      ],
+      "category": "ai_automation",
+      "technologies": ["Gmail", "AI Document Processing", "OCR", "Data Extraction", "Automation"],
+      "highlights": [
+        "Intelligent document type recognition",
+        "Automatic data extraction from various file formats",
+        "Smart routing based on content analysis",
+        "99% accuracy in document processing"
+      ],
+      "metrics": {
+        "automationSavings": "30 hours/week",
+        "accuracyImprovement": "99%",
+        "integrations": 5,
+        "workflowComplexity": "Advanced"
+      },
+      "workflowSteps": [
+        "Monitor Gmail for incoming attachments",
+        "Download and categorize file types",
+        "Apply AI-powered content analysis",
+        "Extract structured data from documents",
+        "Route information to appropriate systems",
+        "Send processing confirmation notifications"
+      ],
+      "integrations": ["Gmail", "AI Vision APIs", "Google Drive", "Database", "Notification Systems"],
+      "sourceFile": "Gmail Auto Attachment.json"
+    },
+    {
+      "id": 4,
+      "title": "Universal Document Intelligence System",
+      "description": "Advanced data extraction and transformation pipeline that processes multiple document formats and converts them into structured, actionable business data.",
+      "images": [
+        {
+          "url": "/images/projects/document-intelligence-1-workflow.jpg",
+          "altText": "Universal document intelligence workflow architecture",
+          "caption": "Complete n8n workflow for advanced data extraction and transformation pipeline",
+          "isMain": true
+        }
+      ],
+      "category": "data_transformation",
+      "technologies": ["Document AI", "Data Transformation", "API Integration", "Machine Learning", "ETL Pipeline"],
+      "highlights": [
+        "Multi-format document processing (PDF, Word, Excel, Images)",
+        "Intelligent data structure recognition",
+        "Automated quality validation and error correction",
+        "Scalable processing architecture"
+      ],
+      "metrics": {
+        "automationSavings": "50 hours/week",
+        "accuracyImprovement": "96%",
+        "integrations": 8,
+        "workflowComplexity": "Expert"
+      },
+      "workflowSteps": [
+        "Receive documents from multiple sources",
+        "Apply intelligent format detection",
+        "Extract structured data using AI models",
+        "Transform data to target formats",
+        "Validate data quality and completeness",
+        "Distribute processed data to endpoints",
+        "Generate processing reports and analytics"
+      ],
+      "integrations": ["Google Drive", "Microsoft Office", "AI APIs", "Database Systems", "CRM", "ERP", "Analytics Tools", "Webhooks"],
+      "sourceFile": "Data Extraction & Transformation.json"
+    },
+    {
+      "id": 5,
+      "title": "AI-Powered Lead Enrichment Pipeline",
+      "description": "Sophisticated lead enrichment system that combines multiple data sources to provide comprehensive prospect insights for sales teams.",
+      "images": [
+        {
+          "url": "/images/projects/lead-enrichment-2-priority-low.jpg",
+          "altText": "Low priority lead processing workflow",
+          "caption": "n8n workflow automation for processing low priority leads through the system"
+        },
+        {
+          "url": "/images/projects/lead-enrichment-4-priority-high.jpg",
+          "altText": "High priority lead processing workflow",
+          "caption": "Advanced workflow automation for high priority lead enrichment and routing",
+          "isMain": true
+        }
+      ],
+      "category": "api_integration",
+      "technologies": ["Lead APIs", "AI Enhancement", "Data Enrichment", "CRM Integration", "Sales Automation"],
+      "highlights": [
+        "Multi-source data aggregation",
+        "AI-powered lead scoring and qualification",
+        "Automated contact information verification",
+        "Integration with sales workflow systems"
+      ],
+      "metrics": {
+        "automationSavings": "20 hours/week",
+        "accuracyImprovement": "92%",
+        "integrations": 5,
+        "workflowComplexity": "Intermediate"
+      },
+      "workflowSteps": [
+        "Capture leads from various sources",
+        "Enrich with demographic and firmographic data",
+        "Apply AI-powered scoring algorithms",
+        "Verify contact information accuracy",
+        "Update CRM with enriched data",
+        "Trigger sales workflow automation"
+      ],
+      "integrations": ["Lead Sources", "Enrichment APIs", "CRM System", "Email Verification", "Sales Automation"],
+      "sourceFile": "Lead enrichment.json"
+    },
+    {
+      "id": 6,
+      "title": "AI Email Personalization System",
+      "description": "Advanced AI-powered email personalization platform that generates highly targeted, context-aware marketing emails using OpenAI GPT-4, with comprehensive data validation, error handling, and performance analytics for UAE-based Reno renovation platform.",
+      "images": [
+        {
+          "url": "/images/projects/ai-email-personalization-overview.jpg",
+          "altText": "AI Email Personalization System workflow overview",
+          "caption": "Complete AI-powered email personalization workflow with OpenAI integration",
+          "isMain": true
+        }
+      ],
+      "category": "ai_automation",
+      "technologies": ["OpenAI GPT-4", "Gmail API", "JavaScript", "AI Personalization", "Email Marketing", "Data Validation"],
+      "highlights": [
+        "AI-powered email content generation using OpenAI GPT-4",
+        "Context-aware personalization based on industry and location",
+        "Comprehensive data validation and error handling",
+        "Real-time cost tracking and performance analytics",
+        "Fallback email templates for reliability",
+        "UAE market-specific content optimization"
+      ],
+      "metrics": {
+        "automationSavings": "45 hours/week",
+        "accuracyImprovement": "97%",
+        "integrations": 4,
+        "workflowComplexity": "Expert"
+      },
+      "workflowSteps": [
+        "Ingest and validate contact data from multiple sources",
+        "Build personalization context with industry and location data",
+        "Generate AI-powered email content using OpenAI GPT-4",
+        "Parse and structure email subject lines and body content",
+        "Deliver personalized emails via Gmail API",
+        "Track delivery costs and performance metrics",
+        "Handle validation errors with fallback templates",
+        "Aggregate results and calculate campaign analytics"
+      ],
+      "integrations": ["OpenAI GPT-4", "Gmail API", "Data Validation", "Performance Analytics"],
+      "sourceFile": "AI Email Personalization System.json"
+    }
+  ],
+  "categories": [
+    { "id": "all", "name": "All Projects", "count": 6 },
+    { "id": "ai_automation", "name": "AI Automation", "count": 3 },
+    { "id": "data_sync", "name": "Data Synchronization", "count": 1 },
+    { "id": "data_transformation", "name": "Data Transformation", "count": 1 },
+    { "id": "api_integration", "name": "API Integration", "count": 1 }
+  ],
+  "integrations": [
+    { "name": "Gmail", "category": "Communication", "projects": [1, 3, 6] },
+    { "name": "Asana", "category": "Project Management", "projects": [1, 2] },
+    { "name": "Google Drive", "category": "File Storage", "projects": [1, 3, 4] },
+    { "name": "Xero", "category": "Accounting", "projects": [2] },
+    { "name": "AI APIs", "category": "Artificial Intelligence", "projects": [3, 4, 5, 6] },
+    { "name": "Database Systems", "category": "Data Storage", "projects": [3, 4] },
+    { "name": "CRM Systems", "category": "Customer Management", "projects": [4, 5] },
+    { "name": "Email Notifications", "category": "Communication", "projects": [2] },
+    { "name": "OpenAI", "category": "Artificial Intelligence", "projects": [6] },
+    { "name": "Email Marketing", "category": "Marketing Automation", "projects": [6] }
+  ]
+}

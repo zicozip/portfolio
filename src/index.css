@@ -1,0 +1,75 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent browser loading indicators during animations */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Prevent loading indicators during animations */
+* {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Optimize animations */
+[class*="motion"], [style*="transform"] {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* Completely disable all progress indicators */
+::-webkit-progress-bar,
+::-webkit-progress-value,
+progress,
+.progress,
+[role="progressbar"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Disable browser loading states */
+html.loading,
+body.loading,
+.loading {
+  cursor: default !important;
+}
+
+/* Hide any potential loading elements */
+[class*="loading"],
+[id*="loading"],
+[class*="progress"],
+[id*="progress"] {
+  display: none !important;
+}
+
+/* Prevent scroll during animations */
+.portfolio-animating {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* Mobile navbar fallback - force background on mobile */
+@media (max-width: 768px) {
+  header[class*="fixed"] {
+    background: rgba(17, 24, 39, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+  }
+}

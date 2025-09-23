@@ -1,0 +1,30 @@
+{
+  "short_name": "KJGudez",
+  "name": "KJGudez Portfolio - n8n Automation Specialist",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "kjg-favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "64x64"
+    },
+    {
+      "src": "logo192.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#22c55e",
+  "background_color": "#111827"
+}

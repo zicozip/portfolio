@@ -1,0 +1,299 @@
+{
+  "name": "Asana-Xero-Report",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "1211261430117123",
+        "workspace": "1211198935502359"
+      },
+      "type": "n8n-nodes-base.asanaTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9e2b403d-c23a-49c2-b365-c7d8a8bcc252",
+      "name": "Node1",
+      "webhookId": "5e87178e-f37c-4536-9abb-a5cbaf66a7eb",
+      "credentials": {
+        "asanaOAuth2Api": {
+          "id": "ZuNWvVD4GHsolEhc",
+          "name": "Asana account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.xero.com/connections",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "e239ea1d-7e78-4eb5-bff5-bc390841a071",
+      "name": "Node2",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "4kOKxrQ7VP4fzX5S",
+          "name": "Unnamed credential"
+        },
+        "xeroOAuth2Api": {
+          "id": "AAvAZ2Au3icUrPPe",
+          "name": "Xero account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.xero.com/api.xro/2.0/Accounts",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xero-tenant-id",
+              "value": "={{ $json.tenantId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        432,
+        0
+      ],
+      "id": "6e0d142c-64fa-4303-8925-62467a1828f0",
+      "name": "Node3",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "4kOKxrQ7VP4fzX5S",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.xero.com/api.xro/2.0/Journals",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "offset",
+              "value": "0"
+            },
+            {
+              "name": "paymentsOnly",
+              "value": "false"
+            },
+            {
+              "name": "limit",
+              "value": "5000"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xero-tenant-id",
+              "value": "={{ $('Node2').item.json.tenantId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        0
+      ],
+      "id": "0de9404d-84ae-4176-b9eb-d5d6b9cd1e28",
+      "name": "Node4",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "4kOKxrQ7VP4fzX5S",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Node 5: Enhanced processing with clean dates, tracking categories, and 2025 filtering\nconst journalsData = $json;\n\nlet transactions = [];\n\nfor (const journal of journalsData.Journals || []) {\n  // Convert Xero date format to readable date and extract year\n  let cleanDate = '';\n  let journalYear = null;\n  \n  if (journal.JournalDate) {\n    const timestamp = journal.JournalDate.match(/\\d+/);\n    if (timestamp) {\n      const date = new Date(parseInt(timestamp[0]));\n      cleanDate = date.toISOString().split('T')[0];\n      journalYear = date.getFullYear();\n    }\n  }\n  \n  // Only process 2025 transactions (change from 2024 to 2025)\n  if (journalYear === 2025) {\n    for (const line of journal.JournalLines || []) {\n      // Extract tracking category info cleanly\n      let trackingRegion = '';\n      let trackingCategory = '';\n      if (line.TrackingCategories && line.TrackingCategories !== '[]') {\n        try {\n          const tracking = JSON.parse(line.TrackingCategories);\n          if (tracking.length > 0) {\n            trackingCategory = tracking[0].Name || '';\n            trackingRegion = tracking[0].Option || '';\n          }\n        } catch (e) {\n          // Handle parsing errors gracefully\n        }\n      }\n      \n      transactions.push({\n        Date: cleanDate,\n        JournalNumber: journal.JournalNumber,\n        JournalID: journal.JournalID,\n        AccountID: line.AccountID,\n        AccountCode: line.AccountCode,\n        AccountName: line.AccountName,\n        AccountType: line.AccountType,\n        Description: line.Description || '',\n        NetAmount: line.NetAmount || 0,\n        GrossAmount: line.GrossAmount || 0,\n        TaxAmount: line.TaxAmount || 0,\n        TaxType: line.TaxType || '',\n        TaxName: line.TaxName || '',\n        TrackingCategory: trackingCategory,\n        TrackingRegion: trackingRegion\n      });\n    }\n  }\n}\n\nconsole.log(`Processed ${transactions.length} transactions from 2025`);\n\nreturn transactions;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        848,
+        0
+      ],
+      "id": "70b5df3b-d68d-41fc-a48c-890c1d176008",
+      "name": "Node5"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Node 6: Aggregate all transactions and convert to CSV\nconst allItems = $input.all(); // Get all items from previous node\nlet transactions = [];\n\nconsole.log(`Number of input items: ${allItems.length}`);\n\n// Collect all transactions from all executions\nfor (const item of allItems) {\n  console.log(`Item type: ${typeof item.json}, Is array: ${Array.isArray(item.json)}`);\n  \n  if (Array.isArray(item.json)) {\n    transactions.push(...item.json);\n    console.log(`Added ${item.json.length} transactions from array`);\n  } else {\n    transactions.push(item.json);\n    console.log(`Added 1 transaction from object`);\n  }\n}\n\nconsole.log(`Total transactions collected: ${transactions.length}`);\n\n// CSV headers\nconst headers = [\n  'Date', 'JournalNumber', 'JournalID', 'AccountID', 'AccountCode',\n  'AccountName', 'AccountType', 'Description', 'NetAmount', 'GrossAmount',\n  'TaxAmount', 'TaxType', 'TaxName', 'TrackingCategory', 'TrackingRegion'\n];\n\n// CSV escape function\nfunction escapeCSV(value) {\n  if (value === null || value === undefined) return '';\n  const str = String(value);\n  if (str.includes(',') || str.includes('\"') || str.includes('\\n') || str.includes('\\r')) {\n    return '\"' + str.replace(/\"/g, '\"\"') + '\"';\n  }\n  return str;\n}\n\n// Build CSV\nlet csvContent = headers.join(',') + '\\n';\nfor (const transaction of transactions) {\n  const row = headers.map(header => escapeCSV(transaction[header]));\n  csvContent += row.join(',') + '\\n';\n}\n\nreturn {\n  csv: csvContent,\n  filename: `xero_account_transactions_${new Date().toISOString().split('T')[0]}.csv`,\n  recordCount: transactions.length,\n  headers: headers\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1056,
+        0
+      ],
+      "id": "4ee6a5f1-622f-4bc5-a3f9-1ddcc238d5f3",
+      "name": "Node6"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "update",
+        "id": "1211261430117126",
+        "otherProperties": {}
+      },
+      "type": "n8n-nodes-base.asana",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        0
+      ],
+      "id": "fedf98b8-f917-4af3-8b50-768959c906e0",
+      "name": "Node7a",
+      "credentials": {
+        "asanaOAuth2Api": {
+          "id": "ZuNWvVD4GHsolEhc",
+          "name": "Asana account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "taskComment",
+        "id": "={{ $json.gid }}",
+        "text": "=Xero Account Transactions Report  \nFilename: {{$node[\"Node6\"].json[\"filename\"]}} \nRecords: {{$node[\"Node6\"].json[\"recordCount\"]}} transactions \nGenerated: {{new Date().toISOString().split('T')[0]}}  \nCSV Data: {{$node[\"Node6\"].json[\"csv\"]}}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.asana",
+      "typeVersion": 1,
+      "position": [
+        1472,
+        0
+      ],
+      "id": "640895ed-d53a-4610-875e-d110ae64db3e",
+      "name": "Node7b",
+      "credentials": {
+        "asanaOAuth2Api": {
+          "id": "ZuNWvVD4GHsolEhc",
+          "name": "Asana account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Node1": {
+      "main": [
+        [
+          {
+            "node": "Node2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node2": {
+      "main": [
+        [
+          {
+            "node": "Node3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node3": {
+      "main": [
+        [
+          {
+            "node": "Node4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node4": {
+      "main": [
+        [
+          {
+            "node": "Node5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node5": {
+      "main": [
+        [
+          {
+            "node": "Node6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node6": {
+      "main": [
+        [
+          {
+            "node": "Node7a",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node7a": {
+      "main": [
+        [
+          {
+            "node": "Node7b",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Node7b": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fb1e1e82-3e77-4cde-a59d-fc7688834826",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c4c3b75356d6a61510c8243f04ffa1f078be7dea5992cd7004e119fc4723ae75"
+  },
+  "id": "nuVzV4cdVbSXD1kT",
+  "tags": []
+}
