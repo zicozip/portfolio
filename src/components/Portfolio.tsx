@@ -11,6 +11,7 @@ const Portfolio: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [mobileCurrentIndex, setMobileCurrentIndex] = useState(0);
+  const [desktopCurrentIndex, setDesktopCurrentIndex] = useState(0);
 
   const { ref, inView } = useInView({
     threshold: 0.1,
@@ -19,21 +20,45 @@ const Portfolio: React.FC = () => {
 
   const filteredProjects = getProjectsByCategory(activeCategory);
   
-  // Reset mobile index when category changes
+  // Sort projects to show Advanced ones first
+  const sortedProjects = React.useMemo(() => {
+    return [...filteredProjects].sort((a, b) => {
+      const complexityOrder = { 'Advanced': 0, 'Expert': 1, 'Intermediate': 2, 'Beginner': 3 };
+      const aOrder = complexityOrder[a.metrics.workflowComplexity as keyof typeof complexityOrder] ?? 4;
+      const bOrder = complexityOrder[b.metrics.workflowComplexity as keyof typeof complexityOrder] ?? 4;
+      return aOrder - bOrder;
+    });
+  }, [filteredProjects]);
+  
+  // Desktop carousel constants
+  const PROJECTS_PER_PAGE = 3;
+  const totalPages = Math.ceil(sortedProjects.length / PROJECTS_PER_PAGE);
+  
+  // Reset indexes when category changes
   React.useEffect(() => {
     setMobileCurrentIndex(0);
+    setDesktopCurrentIndex(0);
   }, [activeCategory]);
   
   
+  // Desktop carousel navigation
+  const handleDesktopPrevious = () => {
+    setDesktopCurrentIndex(prev => prev > 0 ? prev - 1 : totalPages - 1);
+  };
+  
+  const handleDesktopNext = () => {
+    setDesktopCurrentIndex(prev => prev < totalPages - 1 ? prev + 1 : 0);
+  };
+  
   const handleMobilePrevious = () => {
     setMobileCurrentIndex(prev => 
-      prev > 0 ? prev - 1 : filteredProjects.length - 1
+      prev > 0 ? prev - 1 : sortedProjects.length - 1
     );
   };
   
   const handleMobileNext = () => {
     setMobileCurrentIndex(prev => 
-      prev < filteredProjects.length - 1 ? prev + 1 : 0
+      prev < sortedProjects.length - 1 ? prev + 1 : 0
     );
   };
 
@@ -44,7 +69,8 @@ const Portfolio: React.FC = () => {
       'data_sync': 'Data Sync',
       'data_transformation': 'Data Transformation',
       'database_operations': 'Database Ops',
-      'api_integration': 'API Integration'
+      'api_integration': 'API Integration',
+      'healthcare_automation': 'Healthcare Automation'
     };
     return categoryNames[categoryId] || categoryId;
   };
@@ -130,25 +156,60 @@ const Portfolio: React.FC = () => {
               ))}
             </motion.div>
 
-            {/* Desktop Projects Grid */}
+            {/* Desktop Projects Carousel */}
             <div className="hidden md:block">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeCategory}
-                  className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  variants={containerVariants}
-                >
-                  {filteredProjects.map((project) => (
-                    <motion.div
-                      key={project.id}
-                      variants={itemVariants}
-                      className="bg-gray-900 rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col h-full group"
-                      whileHover={{ y: -5 }}
-                      layout
+              <div className="relative">
+                {/* Navigation Arrows */}
+                {totalPages > 1 && (
+                  <>
+                    <motion.button
+                      onClick={handleDesktopPrevious}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-green-500/90 hover:bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg backdrop-blur-sm"
+                      whileHover={{ scale: 1.1, boxShadow: '0 0 20px rgba(34, 197, 94, 0.4)' }}
+                      whileTap={{ scale: 0.95 }}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 }}
                     >
+                      <ChevronLeft size={24} />
+                    </motion.button>
+                    
+                    <motion.button
+                      onClick={handleDesktopNext}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-green-500/90 hover:bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg backdrop-blur-sm"
+                      whileHover={{ scale: 1.1, boxShadow: '0 0 20px rgba(34, 197, 94, 0.4)' }}
+                      whileTap={{ scale: 0.95 }}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <ChevronRight size={24} />
+                    </motion.button>
+                  </>
+                )}
+                
+                {/* Carousel Container */}
+                <div className="overflow-hidden mx-16"> {/* Add margin for arrows */}
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={`${activeCategory}-${desktopCurrentIndex}`}
+                      className="grid grid-cols-3 gap-8"
+                      initial={{ opacity: 0, x: 300 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -300 }}
+                      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                    >
+                      {sortedProjects
+                        .slice(desktopCurrentIndex * PROJECTS_PER_PAGE, (desktopCurrentIndex + 1) * PROJECTS_PER_PAGE)
+                        .map((project, index) => (
+                        <motion.div
+                          key={project.id}
+                          initial={{ opacity: 0, y: 50 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="bg-gray-900 rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col h-full group"
+                          whileHover={{ y: -5 }}
+                        >
                     <div className="relative">
                       <div className="h-48 bg-gradient-to-br from-green-500/20 to-blue-500/20 flex items-center justify-center overflow-hidden">
                         {project.images && project.images.length > 0 && project.images.find(img => img.isMain) ? (
@@ -213,15 +274,36 @@ const Portfolio: React.FC = () => {
                         <ExternalLink size={16} />
                       </button>
                     </div>
+                        </motion.div>
+                      ))}
                     </motion.div>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
+                  </AnimatePresence>
+                </div>
+                
+                {/* Page Indicators */}
+                {totalPages > 1 && (
+                  <div className="flex justify-center mt-8 gap-2">
+                    {Array.from({ length: totalPages }, (_, i) => (
+                      <motion.button
+                        key={i}
+                        onClick={() => setDesktopCurrentIndex(i)}
+                        className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                          i === desktopCurrentIndex 
+                            ? 'bg-green-500 scale-125 shadow-lg' 
+                            : 'bg-gray-600 hover:bg-gray-500'
+                        }`}
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
             
             {/* Mobile Projects Pagination */}
             <div className="md:hidden" style={{ transform: 'translateZ(0)' }}>
-              {filteredProjects.length > 0 && (
+              {sortedProjects.length > 0 && (
                 <>
                   {/* Fixed height container to prevent size jumping */}
                   <div className="relative min-h-[600px] sm:min-h-[650px]" style={{ willChange: 'auto' }}>
@@ -246,7 +328,7 @@ const Portfolio: React.FC = () => {
                         }}
                       >
                         {(() => {
-                          const project = filteredProjects[mobileCurrentIndex];
+                          const project = sortedProjects[mobileCurrentIndex];
                           return (
                             <>
                               <div className="relative">
@@ -331,7 +413,7 @@ const Portfolio: React.FC = () => {
                     <button
                       onClick={handleMobilePrevious}
                       className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300"
-                      disabled={filteredProjects.length <= 1}
+                      disabled={sortedProjects.length <= 1}
                     >
                       <ChevronLeft size={20} />
                       Previous
@@ -339,12 +421,12 @@ const Portfolio: React.FC = () => {
                     
                     <div className="flex items-center gap-2">
                       <span className="text-gray-400 text-sm">
-                        {mobileCurrentIndex + 1} of {filteredProjects.length}
+                        {mobileCurrentIndex + 1} of {sortedProjects.length}
                       </span>
                       
                       {/* Dots indicator */}
                       <div className="flex gap-1 ml-2">
-                        {filteredProjects.map((_, index) => (
+                        {sortedProjects.map((_, index) => (
                           <button
                             key={index}
                             onClick={() => setMobileCurrentIndex(index)}
@@ -361,7 +443,7 @@ const Portfolio: React.FC = () => {
                     <button
                       onClick={handleMobileNext}
                       className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors duration-300"
-                      disabled={filteredProjects.length <= 1}
+                      disabled={sortedProjects.length <= 1}
                     >
                       Next
                       <ChevronRight size={20} />
@@ -371,7 +453,7 @@ const Portfolio: React.FC = () => {
               )}
             </div>
 
-            {filteredProjects.length === 0 && (
+            {sortedProjects.length === 0 && (
               <motion.div
                 variants={itemVariants}
                 className="text-center py-12"
