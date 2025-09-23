@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Mail, MessageCircle, CheckCircle, AlertCircle, Linkedin, ExternalLink } from 'lucide-react';
+import { Mail, MessageCircle, CheckCircle, AlertCircle, Linkedin } from 'lucide-react';
 import { ContactForm } from '../types/portfolio';
 
 const Contact: React.FC = () => {
