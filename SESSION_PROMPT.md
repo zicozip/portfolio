@@ -27,20 +27,28 @@ Before ANY code work:
 
 1. Check git status and current branch
 2. If on main/master → switch to improvements first
-3. Use skills in this order:
+
+3. Decide if brainstorming is needed:
+   - NEW feature/UI changes → use brainstorming first
+   - Simple fixes/tweaks → skip brainstorming, just do it
+
+4. Use skills in this order for new features:
    - superpowers:using-superpowers
    - superpowers:brainstorming (get design approval BEFORE implementation)
    - superpowers:writing-plans (create detailed implementation plan)
 
-4. Execute using:
+5. Execute using:
    - superpowers:subagent-driven-development
    - Two-stage reviews: spec compliance → code quality
    - Fix any issues found before moving on
 
-5. Finish with:
-   - superpowers:finishing-a-development-branch
+6. After each improvement is done:
    - Verify build passes (npm run build)
-   - Present merge/PR options to me
+   - Ask "what next?" or present merge/PR options
+
+7. When ready to finish:
+   - Use superpowers:finishing-a-development-branch
+   - Present options: merge locally / push PR / keep branch
 ```
 
 ---
@@ -91,6 +99,20 @@ import { chromium } from 'playwright';
 ```
 
 Run with: `node screenshot.js`
+
+---
+
+## When to Skip Brainstorming
+
+| Type of Change | Need Brainstorming? |
+|----------------|---------------------|
+| New feature/UI component | Yes - get approval first |
+| Design changes | Yes - get approval first |
+| Simple bug fix | No - just do it |
+| Minor tweaks (colors, sizes) | No - just do it |
+| Code refactoring | No - just do it |
+
+For simple fixes: Make the change → test → verify build → ask "what next?"
 
 ---
 
