@@ -656,16 +656,7 @@ const Footer = () => (
 function App() {
   const [showBoot, setShowBoot] = useState(true)
 
-  // Check localStorage on mount
-  useEffect(() => {
-    const seen = localStorage.getItem('kim_portfolio_boot_seen')
-    if (seen) {
-      setShowBoot(false)
-    }
-  }, [])
-
   const handleBootComplete = () => {
-    localStorage.setItem('kim_portfolio_boot_seen', 'true')
     setShowBoot(false)
   }
 
