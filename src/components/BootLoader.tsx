@@ -29,7 +29,6 @@ const SKIP_HANDLER_DELAY_MS = 500
 const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
   const [currentLine, setCurrentLine] = useState(0)
   const [displayedText, setDisplayedText] = useState('')
-  const [isComplete, setIsComplete] = useState(false)
   const [charIndex, setCharIndex] = useState(0)
 
   // Use ref to track completion status to avoid dependency issues
@@ -38,7 +37,6 @@ const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
   const handleComplete = useCallback(() => {
     if (!isCompleteRef.current) {
       isCompleteRef.current = true
-      setIsComplete(true)
       // Small delay before calling onComplete
       setTimeout(() => {
         onComplete()
