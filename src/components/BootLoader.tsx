@@ -5,39 +5,33 @@ interface BootLoaderProps {
   onComplete: () => void
 }
 
+// Reduced to 8 messages for ~3 second duration
 const BOOT_MESSAGES = [
   '> KIM_OS v1.0.0 initializing...',
-  '> Checking system requirements... OK',
   '> Loading n8n workflow engine...',
-  '> Initializing AI automation modules...',
-  '> Connecting to webhook endpoints...',
+  '> Initializing AI modules...',
   '> Building neural pathways... [OK]',
-  '> Loading workflow templates... 50+ loaded',
-  '> Configuring integration nodes...',
-  '> Parsing automation sequences...',
-  '> Calibrating AI response systems...',
+  '> Loading workflow templates...',
   '> System ready!',
   '> Loading portfolio...'
 ]
 
-// Timing constants
-const TYPING_SPEED_MS = 30
-const LINE_DELAY_MS = 200
-const COMPLETION_DELAY_MS = 500
-const SKIP_HANDLER_DELAY_MS = 500
+// Faster timing for 3 seconds total
+const TYPING_SPEED_MS = 25
+const LINE_DELAY_MS = 150
+const COMPLETION_DELAY_MS = 300
+const SKIP_HANDLER_DELAY_MS = 300
 
 const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
   const [currentLine, setCurrentLine] = useState(0)
   const [displayedText, setDisplayedText] = useState('')
   const [charIndex, setCharIndex] = useState(0)
 
-  // Use ref to track completion status to avoid dependency issues
   const isCompleteRef = useRef(false)
 
   const handleComplete = useCallback(() => {
     if (!isCompleteRef.current) {
       isCompleteRef.current = true
-      // Small delay before calling onComplete
       setTimeout(() => {
         onComplete()
       }, COMPLETION_DELAY_MS)
@@ -60,7 +54,6 @@ const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
       }, TYPING_SPEED_MS)
       return () => clearTimeout(timer)
     } else {
-      // Move to next line after a short delay
       const timer = setTimeout(() => {
         setCurrentLine(prev => prev + 1)
         setCharIndex(0)
@@ -70,7 +63,7 @@ const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
     }
   }, [currentLine, charIndex, handleComplete])
 
-  // Skip handler - click or keypress (with delay to prevent accidental skip on mount)
+  // Skip handler
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>
 
@@ -79,14 +72,12 @@ const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
     }
 
     const handleKeyPress = (e: KeyboardEvent) => {
-      // Ignore if user is typing in an input (shouldn't happen here but good practice)
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
         return
       }
       handleSkip()
     }
 
-    // Add delay before enabling skip handlers
     timeoutId = setTimeout(() => {
       window.addEventListener('click', handleSkip)
       window.addEventListener('keydown', handleKeyPress)
@@ -103,48 +94,76 @@ const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-50 flex flex-col items-start justify-start p-8 md:p-16"
-      style={{
-        backgroundColor: '#0a0a0a',
-        fontFamily: "'JetBrains Mono', 'Fira Code', monospace"
-      }}
+      transition={{ duration: 0.4 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center"
+      style={{ backgroundColor: 'rgba(10, 10, 10, 0.85)' }}
+      onClick={handleComplete}
     >
-      {/* Boot messages */}
-      <div className="flex-1 w-full max-w-4xl">
-        {BOOT_MESSAGES.slice(0, currentLine).map((message, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-sm md:text-base mb-1"
-            style={{ color: '#00fff5' }}
-          >
-            {message}
-          </motion.div>
-        ))}
+      {/* Terminal Popup */}
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="w-full max-w-lg mx-4"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          backgroundColor: '#0a0a0a',
+          border: '1px solid rgba(0, 255, 245, 0.3)',
+          borderRadius: '12px',
+          boxShadow: '0 0 60px rgba(0, 255, 245, 0.15)',
+          fontFamily: "'JetBrains Mono', 'Fira Code', monospace"
+        }}
+      >
+        {/* Terminal Header */}
+        <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: 'rgba(0, 255, 245, 0.2)' }}>
+          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#ff5f56' }} />
+          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#ffbd2e' }} />
+          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#27ca40' }} />
+          <span className="ml-4 text-xs" style={{ color: '#666' }}>kim@portfolio ~ boot</span>
+        </div>
 
-        {/* Current line with typewriter effect */}
-        {currentLine < BOOT_MESSAGES.length && (
-          <div className="text-sm md:text-base" style={{ color: '#00fff5' }}>
-            {displayedText}
-            <span className="animate-pulse">▋</span>
+        {/* Terminal Body */}
+        <div className="p-6">
+          {/* ASCII Art Header */}
+          <div className="text-xs mb-4" style={{ color: '#00fff5' }}>
+            <pre className="text-[10px] leading-tight">
+{`
+   ██████╗ ██████╗ ██╗   ██╗██╗   ██╗██╗  ██╗
+  ██╔════╝ ██╔══██╗╚██╗ ██╔╝██║   ██║██║ ██╔╝
+  ██║      ██████╔╝ ╚████╔╝ ██║   ██║█████╔╝
+  ██║      ██╔══██╗  ╚██╔╝  ██║   ██║██╔═██╗
+  ╚██████╗ ██║  ██║   ██║   ╚██████╔╝██║  ██╗
+   ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
+`}
+            </pre>
           </div>
-        )}
-      </div>
 
-      {/* Skip instruction at bottom */}
-      <div className="w-full max-w-4xl">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="text-xs md:text-sm mt-8"
-          style={{ color: '#00fff5', opacity: 0.5 }}
-        >
-          Press any key or click to skip
-        </motion.div>
-      </div>
+          {/* Boot Messages */}
+          <div className="space-y-1 mb-4">
+            {BOOT_MESSAGES.slice(0, currentLine).map((message, index) => (
+              <div
+                key={index}
+                className="text-xs"
+                style={{ color: index === BOOT_MESSAGES.length - 1 ? '#ffb800' : '#00fff5' }}
+              >
+                {message}
+              </div>
+            ))}
+
+            {currentLine < BOOT_MESSAGES.length && (
+              <div className="text-xs" style={{ color: '#00fff5' }}>
+                {displayedText}
+                <span className="animate-pulse">▋</span>
+              </div>
+            )}
+          </div>
+
+          {/* Skip hint */}
+          <div className="text-xs" style={{ color: '#444' }}>
+            Press any key or click to skip
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   )
 }
