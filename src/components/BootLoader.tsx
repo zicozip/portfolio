@@ -96,37 +96,37 @@ const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
       className="fixed inset-0 z-[100] flex items-center justify-center"
-      style={{ backgroundColor: 'rgba(10, 10, 10, 0.85)' }}
+      style={{ backgroundColor: '#0a0a0a' }}
       onClick={handleComplete}
     >
-      {/* Terminal Popup */}
+      {/* Terminal Popup - 2x size */}
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="w-full max-w-lg mx-4"
+        className="w-full max-w-3xl mx-4 md:max-w-4xl"
         onClick={(e) => e.stopPropagation()}
         style={{
           backgroundColor: '#0a0a0a',
           border: '1px solid rgba(0, 255, 245, 0.3)',
-          borderRadius: '12px',
-          boxShadow: '0 0 60px rgba(0, 255, 245, 0.15)',
+          borderRadius: '16px',
+          boxShadow: '0 0 80px rgba(0, 255, 245, 0.2)',
           fontFamily: "'JetBrains Mono', 'Fira Code', monospace"
         }}
       >
         {/* Terminal Header */}
-        <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: 'rgba(0, 255, 245, 0.2)' }}>
-          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#ff5f56' }} />
-          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#ffbd2e' }} />
-          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#27ca40' }} />
-          <span className="ml-4 text-xs" style={{ color: '#666' }}>kim@portfolio ~ boot</span>
+        <div className="flex items-center gap-2 px-6 py-4 border-b" style={{ borderColor: 'rgba(0, 255, 245, 0.2)' }}>
+          <div className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: '#ff5f56' }} />
+          <div className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: '#ffbd2e' }} />
+          <div className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: '#27ca40' }} />
+          <span className="ml-4 text-sm" style={{ color: '#666' }}>kim@portfolio ~ boot</span>
         </div>
 
-        {/* Terminal Body */}
-        <div className="p-6">
-          {/* ASCII Art Header */}
-          <div className="text-xs mb-4" style={{ color: '#00fff5' }}>
-            <pre className="text-[10px] leading-tight">
+        {/* Terminal Body - larger padding */}
+        <div className="p-8 md:p-12">
+          {/* ASCII Art Header - larger */}
+          <div className="text-xs mb-6" style={{ color: '#00fff5' }}>
+            <pre className="text-[12px] md:text-[14px] leading-tight">
 {`
    ██████╗ ██████╗ ██╗   ██╗██╗   ██╗██╗  ██╗
   ██╔════╝ ██╔══██╗╚██╗ ██╔╝██║   ██║██║ ██╔╝
@@ -138,12 +138,12 @@ const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
             </pre>
           </div>
 
-          {/* Boot Messages */}
-          <div className="space-y-1 mb-4">
+          {/* Boot Messages - larger text */}
+          <div className="space-y-2 mb-6">
             {BOOT_MESSAGES.slice(0, currentLine).map((message, index) => (
               <div
                 key={index}
-                className="text-xs"
+                className="text-sm md:text-base"
                 style={{ color: index === BOOT_MESSAGES.length - 1 ? '#ffb800' : '#00fff5' }}
               >
                 {message}
@@ -151,15 +151,15 @@ const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
             ))}
 
             {currentLine < BOOT_MESSAGES.length && (
-              <div className="text-xs" style={{ color: '#00fff5' }}>
+              <div className="text-sm md:text-base" style={{ color: '#00fff5' }}>
                 {displayedText}
                 <span className="animate-pulse">▋</span>
               </div>
             )}
           </div>
 
-          {/* Skip hint */}
-          <div className="text-xs" style={{ color: '#444' }}>
+          {/* Skip hint - larger */}
+          <div className="text-sm" style={{ color: '#444' }}>
             Press any key or click to skip
           </div>
         </div>
