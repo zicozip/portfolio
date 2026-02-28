@@ -1,52 +1,80 @@
-# Session Prompt for Portfolio Development
+# Session Prompt
 
-Use this prompt at the start of each new session to ensure consistent workflow.
+Use this at the start of every new session.
 
 ---
 
+## Base Setup
+
+Project: `D:\Minimax\PortWarp\kim-portfolio-new`
+
+**For NEW projects (no git yet):**
 ```
-I want you to build/improve my portfolio website (D:\Minimax\PortWarp\kim-portfolio-new).
+Create a new project at [FOLDER_PATH]:
+1. Initialize git with main branch
+2. Create improvements branch
+3. Set up the workflow below
 
-Before doing ANY code work, use these skills in order:
-
-1. **superpowers:using-superpowers** - to load all available skills
-2. **superpowers:brainstorming** - to explore ideas and get design approval BEFORE implementation
-3. Use **subagent-driven-development** with **superpowers:writing-plans** to create detailed implementation plans
-
-Git workflow:
-- Always work on the **improvements** branch first
-- Only push to **master** after I approve the changes
-- Create proper commits with good messages
-
-Code quality:
-- Use the subagent-driven workflow: implementation → spec review → code quality review → fixes → approval
-- Run tests/verification before finishing
-- Fix any TypeScript/build errors before declaring done
-
-Use all available tools:
-- MCP tools (Playwright, MiniMax, Context7)
-- Task tool for parallel/subagent work
-- Proper file exploration before making changes
-
-Start by checking the current git status and what branch we're on.
+Then explore what we should build using brainstorming.
 ```
 
 ---
 
-## Workflow Summary
+## Standard Workflow
 
-| Phase | Skills/Tools | Action |
-|-------|--------------|--------|
-| 1. Start | using-superpowers | Load all skills |
-| 2. Explore | brainstorming | Get design approval first |
-| 3. Plan | writing-plans | Create detailed implementation plan |
-| 4. Execute | subagent-driven-development | Implement with reviews |
-| 5. Verify | Build + Playwright | Test and fix errors |
-| 6. Finish | finishing-a-development-branch | Present merge/PR options |
+```
+Before ANY code work:
 
-## Git Branch Rules
+1. Check git status and current branch
+2. If on main/master → switch to improvements first
+3. Use skills in this order:
+   - superpowers:using-superpowers
+   - superpowers:brainstorming (get design approval BEFORE implementation)
+   - superpowers:writing-plans (create detailed implementation plan)
 
-- **improvements** = Working branch for new features/fixes
-- **master** = Production branch (only merge after approval)
-- Always commit to improvements first
-- Never push directly to master without explicit approval
+4. Execute using:
+   - superpowers:subagent-driven-development
+   - Two-stage reviews: spec compliance → code quality
+   - Fix any issues found before moving on
+
+5. Finish with:
+   - superpowers:finishing-a-development-branch
+   - Verify build passes (npm run build)
+   - Present merge/PR options to me
+```
+
+---
+
+## Code Quality Standards
+
+- No TypeScript errors
+- No build failures
+- Spec compliance before code quality
+- Test/verify before declaring done
+
+---
+
+## Git Rules
+
+| Branch | Purpose |
+|--------|---------|
+| improvements | Working branch for features/fixes |
+| main/master | Production (never touch without approval) |
+
+Always commit to improvements first, then get my approval before merging to main.
+
+---
+
+## Available Tools
+
+- **MCP Tools**: Playwright (testing/screenshots), MiniMax (image analysis), Context7 (docs)
+- **Task Tool**: Subagent work, parallel tasks
+- **Grep/Glob**: Code exploration before changes
+
+Use them proactively - don't wait for me to ask.
+
+---
+
+## Quick Reminder
+
+If you ever forget the workflow, just say "Use the standard portfolio workflow" and I'll follow this prompt.
