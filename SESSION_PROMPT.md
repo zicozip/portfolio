@@ -100,7 +100,10 @@ import { chromium } from 'playwright';
 
 Run with: `node screenshot.js`
 
-**After testing: Delete screenshot files (e.g., `rm boot-*.png`)**
+**For EVERY fix/improvement:
+1. Take screenshot → Analyze with MiniMax → Verify changes look correct
+2. Delete screenshot files (e.g., `rm boot-*.png`)
+3. THEN commit**
 
 Don't leave test screenshots in the project.
 
