@@ -73,6 +73,25 @@ Always commit to improvements first, then get my approval before merging to main
 
 Use them proactively - don't wait for me to ask.
 
+## Playwright Fix
+
+If Playwright MCP fails (browser not found), use this workaround:
+
+```javascript
+// screenshot.js - run with: node screenshot.js
+import { chromium } from 'playwright';
+
+(async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  await page.goto('http://localhost:5173');
+  await page.screenshot({ path: 'screenshot.png', fullPage: true });
+  await browser.close();
+})();
+```
+
+Run with: `node screenshot.js`
+
 ---
 
 ## Quick Reminder
