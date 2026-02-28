@@ -20,6 +20,60 @@ Then explore what we should build using brainstorming.
 
 ---
 
+## Design Brainstorming (For New/Redesign)
+
+When starting a NEW design or REDESIGN (no UI yet or want completely new look):
+
+**Step 1: Explore the current state**
+- Check existing files, assets, old designs
+- Research current trends in the industry
+- Understand the purpose: portfolio, SaaS, e-commerce, etc.
+
+**Step 2: Ask strategic questions**
+1. Who is the TARGET AUDIENCE? (clients, employers, users)
+2. What is the MAIN GOAL? (convert leads, showcase work, sell products)
+3. What makes this UNIQUE? (your differentiator)
+4. What current TRENDS fit the brand? (2026 aesthetics)
+5. What should users FEEL when visiting? (impressed, trust, amazed)
+
+**Step 3: Propose 2-3 design directions**
+- Each with distinct visual approach
+- Explain WHY each would work for the target audience
+- Give your RECOMMENDATION with reasoning
+
+**Step 4: Present the design**
+- Describe the visual style, color scheme, typography
+- Explain the user flow and key features
+- Get approval BEFORE any code
+
+---
+
+## Example: Portfolio Design Process
+
+For a portfolio like kjgudez.tech:
+```
+Target Audience: Potential clients seeking AI automation services
+Main Goal: Convert visitors to projects
+Unique: DMD → AI career path (medical background in tech)
+Vibe: Professional yet innovative, 2026 modern
+
+Proposed approaches:
+1. Terminal/CLI style - Technical, authentic to AI work
+2. Glassmorphism cards - Modern, premium feel
+3. Minimal with bold typography - Clean, focus on work
+
+Recommended: #1 (Terminal style)
+- Matches AI/automation theme naturally
+- Stands out from typical portfolios
+- Shows technical expertise through design itself
+```
+
+---
+
+The key is asking "What would impress a client in 2026?" and designing to exceed that expectation.
+
+---
+
 ## Standard Workflow
 
 ```
