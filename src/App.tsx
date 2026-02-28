@@ -502,8 +502,8 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-3">
-              <div className="flex flex-col h-full">
+            <div className="grid md:grid-cols-2 gap-3 items-stretch">
+              <div className="flex flex-col h-full justify-between">
                 <div>
                   <h2 className="text-lg font-bold text-white mb-1">
                     Let's <span className="text-[#00fff5]">Connect</span>
@@ -534,56 +534,94 @@ const Contact = () => {
                   ))}
                 </div>
 
-                <div className="mt-auto pt-4">
-                  <div className="p-2 bg-[#00fff5]/5 border border-[#00fff5]/20 rounded-lg">
-                    <div className="flex items-center gap-2 text-[#00fff5] text-xs mb-1">
+                <div className="pt-4 mt-auto">
+                  <div className="w-full p-2 bg-[#00fff5]/10 border border-[#00fff5]/30 rounded-lg flex items-center justify-center h-10">
+                    <div className="flex items-center gap-2 text-[#00fff5] text-sm">
                       <Sparkles size={12} />
                       <span className="font-semibold">Response Time</span>
+                      <span className="text-gray-500">|</span>
+                      <span className="text-gray-500">Usually within 24 hours</span>
                     </div>
-                    <p className="text-gray-500 text-xs">Usually within 24 hours</p>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col h-full">
+              <div className="flex flex-col h-full justify-between">
               {sent ? (
-                <div className="text-center py-4">
-                  <CheckCircle size={32} className="text-[#00fff5] mx-auto mb-2" />
-                  <p className="text-white font-semibold text-sm">Message Sent!</p>
-                  <p className="text-gray-500 text-xs mt-1">I'll get back to you soon.</p>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-[#ffb800] text-sm">
+                    <span className="text-[#00fff5]">$</span>
+                    <span>echo "message" | send</span>
+                  </div>
+                  <div className="pl-3 space-y-1 text-xs">
+                    <p className="text-[#00fff5]">
+                      <span className="text-[#ffb800]">➜</span> Message sent successfully
+                    </p>
+                    <p className="text-gray-500">
+                      <span className="text-[#ffb800]">➜</span> Awaiting response from kim@portfolio
+                    </p>
+                    <p className="text-gray-600 mt-2">
+                      Status: <span className="text-[#00fff5]">delivered</span>
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setSent(false)}
+                    className="mt-4 text-xs text-gray-500 hover:text-[#00fff5] transition-colors underline"
+                  >
+                    → Send another message
+                  </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-2">
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    value={formState.name}
-                    onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                    className="w-full px-3 py-2 bg-[#0a0a0a] border border-[#00fff5]/20 rounded text-white placeholder-gray-600 text-sm focus:border-[#00fff5] focus:outline-none transition-colors"
-                    required
-                  />
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    value={formState.email}
-                    onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                    className="w-full px-3 py-2 bg-[#0a0a0a] border border-[#00fff5]/20 rounded text-white placeholder-gray-600 text-sm focus:border-[#00fff5] focus:outline-none transition-colors"
-                    required
-                  />
-                  <textarea
-                    placeholder="Your Message"
-                    rows={3}
-                    value={formState.message}
-                    onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                    className="w-full px-3 py-2 bg-[#0a0a0a] border border-[#00fff5]/20 rounded text-white placeholder-gray-600 text-sm focus:border-[#00fff5] focus:outline-none transition-colors resize-none"
-                    required
-                  />
+                <form onSubmit={handleSubmit} className="space-y-2 pt-4 md:pt-0">
+                  <div className="space-y-1">
+                    <label className="flex items-center gap-2 text-xs text-gray-500">
+                      <span className="text-[#00fff5]">$</span>
+                      <span>name =</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder='"Your Name"'
+                      value={formState.name}
+                      onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                      className="w-full px-3 py-2 bg-[#0a0a0a] border border-[#00fff5]/20 rounded text-white placeholder-gray-700 text-sm focus:border-[#00fff5] focus:outline-none transition-colors font-mono"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="flex items-center gap-2 text-xs text-gray-500">
+                      <span className="text-[#00fff5]">$</span>
+                      <span>email =</span>
+                    </label>
+                    <input
+                      type="email"
+                      placeholder='"your@email.com"'
+                      value={formState.email}
+                      onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                      className="w-full px-3 py-2 bg-[#0a0a0a] border border-[#00fff5]/20 rounded text-white placeholder-gray-700 text-sm focus:border-[#00fff5] focus:outline-none transition-colors font-mono"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="flex items-center gap-2 text-xs text-gray-500">
+                      <span className="text-[#00fff5]">$</span>
+                      <span>message =</span>
+                    </label>
+                    <textarea
+                      placeholder='"Your message here..."'
+                      rows={3}
+                      value={formState.message}
+                      onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                      className="w-full px-3 py-2 bg-[#0a0a0a] border border-[#00fff5]/20 rounded text-white placeholder-gray-700 text-sm focus:border-[#00fff5] focus:outline-none transition-colors resize-none font-mono"
+                      required
+                    />
+                  </div>
                   <button
                     type="submit"
-                    className="w-full py-2 bg-[#00fff5]/10 border border-[#00fff5]/30 text-[#00fff5] font-semibold rounded text-sm hover:bg-[#00fff5]/20 transition-colors flex items-center justify-center gap-2"
+                    className="w-full p-2 bg-[#00fff5]/10 border border-[#00fff5]/30 text-[#00fff5] font-semibold rounded-lg text-sm hover:bg-[#00fff5]/20 transition-colors flex items-center justify-center gap-2 group"
                   >
-                    <Send size={14} />
-                    Send
+                    <span className="text-[#ffb800] group-hover:text-[#00fff5] transition-colors">$</span>
+                    ./send.sh
+                    <span className="terminal-cursor" />
                   </button>
                 </form>
               )}
