@@ -100,6 +100,10 @@ import { chromium } from 'playwright';
 
 Run with: `node screenshot.js`
 
+**After testing: Delete screenshot files (e.g., `rm boot-*.png`)**
+
+Don't leave test screenshots in the project.
+
 ---
 
 ## When to Skip Brainstorming
@@ -112,7 +116,7 @@ Run with: `node screenshot.js`
 | Minor tweaks (colors, sizes) | No - just do it |
 | Code refactoring | No - just do it |
 
-For simple fixes: Make the change → test → verify build → ask "what next?"
+For simple fixes: Make the change → test → verify build → delete test screenshots → ask "what next?"
 
 ---
 
