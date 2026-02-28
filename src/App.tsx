@@ -6,6 +6,7 @@ import {
   Briefcase, Sparkles, CheckCircle, Folder, FileText
 } from 'lucide-react'
 import { projects } from './data/projects'
+import BootLoader from './components/BootLoader'
 
 // Terminal Window Component
 const TerminalWindow = ({ children, title = "kim@portfolio", className = "" }: { children: React.ReactNode; title?: string; className?: string }) => (
@@ -653,6 +654,24 @@ const Footer = () => (
 
 // Main App
 function App() {
+  const [showBoot, setShowBoot] = useState(true)
+  const [hasSeenBoot, setHasSeenBoot] = useState(false)
+
+  // Check localStorage on mount
+  useEffect(() => {
+    const seen = localStorage.getItem('kim_portfolio_boot_seen')
+    if (seen) {
+      setShowBoot(false)
+      setHasSeenBoot(true)
+    }
+  }, [])
+
+  const handleBootComplete = () => {
+    localStorage.setItem('kim_portfolio_boot_seen', 'true')
+    setShowBoot(false)
+    setHasSeenBoot(true)
+  }
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
@@ -676,6 +695,9 @@ function App() {
     <div className="min-h-screen bg-[#0a0a0a] relative">
       <div className="gradient-bg" />
       <div id="particle-container" />
+      <AnimatePresence key={showBoot}>
+        {showBoot && <BootLoader onComplete={handleBootComplete} />}
+      </AnimatePresence>
       <Header />
       <main className="relative z-10">
         <Hero />
