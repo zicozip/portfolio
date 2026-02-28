@@ -6,7 +6,7 @@ Use this at the start of every new session.
 
 ## Base Setup
 
-Project: `D:\Minimax\PortWarp\kim-portfolio-new`
+**For ANY project:** `D:\Minimax\PortWarp\kim-portfolio-new` (or any path you give me)
 
 **For NEW projects (no git yet):**
 ```
@@ -48,24 +48,16 @@ When starting a NEW design or REDESIGN (no UI yet or want completely new look):
 
 ---
 
-## Example: Portfolio Design Process
+## Design Examples
 
 For a portfolio like kjgudez.tech:
 ```
-Target Audience: Potential clients seeking AI automation services
-Main Goal: Convert visitors to projects
-Unique: DMD → AI career path (medical background in tech)
-Vibe: Professional yet innovative, 2026 modern
+Target: Potential clients seeking AI automation services
+Goal: Convert visitors to projects
+Unique: DMD → AI career path
+Vibe: Professional yet innovative
 
-Proposed approaches:
-1. Terminal/CLI style - Technical, authentic to AI work
-2. Glassmorphism cards - Modern, premium feel
-3. Minimal with bold typography - Clean, focus on work
-
-Recommended: #1 (Terminal style)
-- Matches AI/automation theme naturally
-- Stands out from typical portfolios
-- Shows technical expertise through design itself
+→ Terminal/CLI style won - authentic to AI work
 ```
 
 ---
