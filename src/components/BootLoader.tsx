@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 
 interface BootLoaderProps {
@@ -20,21 +20,31 @@ const BOOT_MESSAGES = [
   '> Loading portfolio...'
 ]
 
+// Timing constants
+const TYPING_SPEED_MS = 30
+const LINE_DELAY_MS = 200
+const COMPLETION_DELAY_MS = 500
+const SKIP_HANDLER_DELAY_MS = 500
+
 const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
   const [currentLine, setCurrentLine] = useState(0)
   const [displayedText, setDisplayedText] = useState('')
   const [isComplete, setIsComplete] = useState(false)
   const [charIndex, setCharIndex] = useState(0)
 
+  // Use ref to track completion status to avoid dependency issues
+  const isCompleteRef = useRef(false)
+
   const handleComplete = useCallback(() => {
-    if (!isComplete) {
+    if (!isCompleteRef.current) {
+      isCompleteRef.current = true
       setIsComplete(true)
       // Small delay before calling onComplete
       setTimeout(() => {
         onComplete()
-      }, 500)
+      }, COMPLETION_DELAY_MS)
     }
-  }, [isComplete, onComplete])
+  }, [onComplete])
 
   // Typewriter effect
   useEffect(() => {
@@ -49,7 +59,7 @@ const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
       const timer = setTimeout(() => {
         setDisplayedText(currentMessage.substring(0, charIndex + 1))
         setCharIndex(prev => prev + 1)
-      }, 30) // Typing speed
+      }, TYPING_SPEED_MS)
       return () => clearTimeout(timer)
     } else {
       // Move to next line after a short delay
@@ -57,13 +67,15 @@ const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
         setCurrentLine(prev => prev + 1)
         setCharIndex(0)
         setDisplayedText('')
-      }, 200) // Delay between lines
+      }, LINE_DELAY_MS)
       return () => clearTimeout(timer)
     }
   }, [currentLine, charIndex, handleComplete])
 
-  // Skip handler - click or keypress
+  // Skip handler - click or keypress (with delay to prevent accidental skip on mount)
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>
+
     const handleSkip = () => {
       handleComplete()
     }
@@ -76,10 +88,14 @@ const BootLoader: React.FC<BootLoaderProps> = ({ onComplete }) => {
       handleSkip()
     }
 
-    window.addEventListener('click', handleSkip)
-    window.addEventListener('keydown', handleKeyPress)
+    // Add delay before enabling skip handlers
+    timeoutId = setTimeout(() => {
+      window.addEventListener('click', handleSkip)
+      window.addEventListener('keydown', handleKeyPress)
+    }, SKIP_HANDLER_DELAY_MS)
 
     return () => {
+      clearTimeout(timeoutId)
       window.removeEventListener('click', handleSkip)
       window.removeEventListener('keydown', handleKeyPress)
     }
