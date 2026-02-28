@@ -16,7 +16,9 @@
       "Bash(rm:*)",
       "mcp__MiniMax__understand_image",
       "Bash(node:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(git push:*)",
+      "Bash(git:*)"
     ]
   }
 }
