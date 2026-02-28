@@ -71,6 +71,19 @@ Before ANY code work:
 
 Always commit to improvements first, then get my approval before merging to main.
 
+## Applying to Master (Locally Only)
+
+When I say "apply to master" or "merge to main":
+
+```
+1. git checkout master (or main)
+2. git merge improvements
+3. npm run build (verify)
+4. Done!
+```
+
+Note: This project has no remote origin - all local only.
+
 ---
 
 ## Available Tools
